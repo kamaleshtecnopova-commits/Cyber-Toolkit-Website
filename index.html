@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cyber Toolkit Hub</title>
+
+<style>
+body {
+  background: bisque;
+  color: blue;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: larger;
+  text-align: center;
+}
+
+h1 {
+  margin: 60px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 20px;
+}
+
+.card {
+  padding: 20px;
+  background: lavender;
+  cursor: pointer;
+  color: darksalmon;
+  border: 2px solid deepskyblue;
+  position: relative;
+  transition: 0.3s;
+  letter-spacing: 1px;
+  border-radius: 20px;
+}
+
+.card:hover {
+  background: lavenderblush;
+  color: lightskyblue;
+  box-shadow: 0 0 10px lightcyan,
+              0 0 20px lightcyan,
+              0 0 40px lightcyan;
+}
+
+#output {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #00ffcc;
+}
+
+input, textarea, select {
+  padding: 8px;
+  margin: 5px;
+  width: 60%;
+}
+
+button {
+  padding: 8px 15px;
+  margin: 5px;
+  background: #00ffcc;
+  border: none;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🛡️ Cyber Toolkit Hub </h1>
+
+<div class="container">
+  <div class="card" onclick="showTool('password')">Password Checker</div>
+  <div class="card" onclick="showTool('url')">URL Scanner</div>
+  <div class="card" onclick="showTool('phishing')">Phishing Check</div>
+  <div class="card" onclick="showTool('hash')">Hash Tool</div>
+  <div class="card" onclick="showTool('calc')">Calculator</div>
+
+  <div class="card" onclick="showTool('email')">Email Safety</div>
+  <div class="card" onclick="showTool('generator')">Password Generator</div>
+  <div class="card" onclick="showTool('ip')">IP Info</div>
+  <div class="card" onclick="showTool('tips')">Tips Tool</div>
+
+  <div class="card" onclick="showTool('crypto')">Encrypt/Decrypt</div>
+  <div class="card" onclick="showTool('code')">Code Converter</div>
+</div>
+
+<div id="output">Select a tool 👆</div>
+
+<script>
+function showTool(tool) {
+  let out = document.getElementById("output");
+
+  if (tool === "password") {
+    out.innerHTML = `
+    <input type="password" id="pass" placeholder="Enter password">
+    <button onclick="checkPass()">Check</button>
+    <p id="result"></p>`;
+  }
+
+  if (tool === "url") {
+    out.innerHTML = `
+    <input type="text" id="url" placeholder="Enter URL">
+    <button onclick="scanURL()">Scan</button>`;
+  }
+
+  if (tool === "phishing") {
+    out.innerHTML = `
+    <input type="text" id="phish" placeholder="Enter message/link">
+    <button onclick="checkPhish()">Check</button>`;
+  }
+
+  if (tool === "hash") {
+    out.innerHTML = `
+    <input type="text" id="hashInput" placeholder="Enter text">
+    <button onclick="hashText()">Generate</button>
+    <p id="hashOutput"></p>`;
+  }
+
+  if (tool === "email") {
+    out.innerHTML = `
+    <textarea id="emailText" placeholder="Paste email"></textarea>
+    <button onclick="checkEmail()">Check</button>`;
+  }
+
+  if (tool === "generator") {
+    out.innerHTML = `
+    <button onclick="generatePass()">Generate Password</button>
+    <p id="gen"></p>`;
+  }
+
+  if (tool === "ip") {
+    out.innerHTML = `
+    <p>IP: 192.168.1.1</p>
+    <p>Location: India</p>
+    <p>Status: Secure ✅</p>`;
+  }
+
+  if (tool === "tips") {
+    out.innerHTML = `
+    <button onclick="showTip()">Get Tip</button>
+    <p id="tip"></p>`;
+  }
+
+  if (tool === "crypto") {
+    out.innerHTML = `
+    <input type="text" id="text" placeholder="Enter message">
+    <button onclick="encrypt()">Encrypt</button>
+    <button onclick="decrypt()">Decrypt</button>
+    <p id="cryptoResult"></p>`;
+  }
+
+  if (tool === "code") {
+    out.innerHTML = `
+    <select id="fromLang">
+      <option>Python</option>
+      <option>C</option>
+      <option>Java</option>
+    </select>
+    <select id="toLang">
+      <option>C</option>
+      <option>Java</option>
+      <option>Python</option>
+    </select>
+    <textarea id="inputCode" placeholder="Enter code"></textarea>
+    <button onclick="convertCode()">Convert</button>
+    <pre id="outputCode"></pre>`;
+  }
+
+  if (tool === "calc") {
+  document.getElementById("output").innerHTML = `
+    <h3>Calculator</h3>
+    <input type="text" id="calcInput" placeholder="Enter expression (e.g. 5+3*2)">
+    <br>
+    <button onclick="calculate()">Calculate</button>
+    <p id="calcResult"></p>
+  `;
+}
+
+}
+
+// FUNCTIONS
+
+function checkPass() {
+  let p = document.getElementById("pass").value;
+  let res = "Weak";
+  if (p.length > 8 && /[A-Z]/.test(p) && /[0-9]/.test(p)) res = "Strong 💪";
+  else if (p.length > 5) res = "Medium ⚠️";
+  document.getElementById("result").innerText = res;
+}
+
+function generatePass() {
+  let chars = "abcABC123!@#";
+  let pass = "";
+  for (let i = 0; i < 10; i++)
+    pass += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById("gen").innerText = pass;
+}
+
+function scanURL() {
+  let url = document.getElementById("url").value;
+  alert(url.includes("https") ? "Safe ✅" : "Suspicious ⚠️");
+}
+
+function checkPhish() {
+  let text = document.getElementById("phish").value;
+  if (text.includes("login") || text.includes("bank"))
+    alert("Phishing detected ⚠️");
+  else alert("Looks safe ✅");
+}
+
+function hashText() {
+  let t = document.getElementById("hashInput").value;
+  document.getElementById("hashOutput").innerText = btoa(t);
+}
+
+function checkEmail() {
+  let t = document.getElementById("emailText").value;
+  if (t.includes("urgent") || t.includes("click"))
+    alert("Suspicious Email ⚠️");
+  else alert("Safe Email ✅");
+}
+
+function showTip() {
+  let tips = ["Use strong passwords","Enable 2FA","Avoid public WiFi"];
+  document.getElementById("tip").innerText =
+    tips[Math.floor(Math.random()*tips.length)];
+}
+
+function encrypt() {
+  let t = document.getElementById("text").value;
+  document.getElementById("cryptoResult").innerText = btoa(t);
+}
+
+function decrypt() {
+  try {
+    let t = document.getElementById("text").value;
+    document.getElementById("cryptoResult").innerText = atob(t);
+  } catch {
+    document.getElementById("cryptoResult").innerText = "Invalid ❌";
+  }
+}
+
+function convertCode() {
+  let from = document.getElementById("fromLang").value;
+  let to = document.getElementById("toLang").value;
+
+  let result = "// Demo Conversion\nHello World Example";
+
+  if (from === "Python" && to === "C")
+    result = "#include<stdio.h>\nint main(){printf(\"Hello\");}";
+  else if (from === "C" && to === "Java")
+    result = "class Main{public static void main(String[] args){System.out.println(\"Hello\");}}";
+
+  document.getElementById("outputCode").innerText = result;
+}
+
+function calculate() {
+  let input = document.getElementById("calcInput").value;
+
+  try {
+    let result = eval(input); // evaluates math expression
+    document.getElementById("calcResult").innerText = "Result: " + result;
+  } catch {
+    document.getElementById("calcResult").innerText = "Invalid Expression ❌";
+  }
+}
+</script>
+
+</body>
+</html>
